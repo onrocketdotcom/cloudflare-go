@@ -15,7 +15,7 @@ then
   exit 1
 fi
 
-current_pr=$(curl -s "https://api.github.com/repos/cloudflare/cloudflare-go/issues?state=all&per_page=1" | jq -r ".[].number")
+current_pr=$(curl -s "https://api.github.com/repos/onrocketdotcom/cloudflare-go/issues?state=all&per_page=1" | jq -r ".[].number")
 next_pr=$(($current_pr + 1))
 changelog_path=".changelog/$next_pr.txt"
 
