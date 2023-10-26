@@ -8,14 +8,14 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cloudflare/cloudflare-go"
 	"github.com/google/go-github/github"
+	"github.com/onrocketdotcom/cloudflare-go"
 	"golang.org/x/oauth2"
 )
 
 const (
 	changelogEntryFileFormat      = ".changelog/%d.txt"
-	changelogProcessDocumentation = "https://github.com/cloudflare/cloudflare-go/blob/master/docs/changelog-process.md"
+	changelogProcessDocumentation = "https://github.com/onrocketdotcom/cloudflare-go/blob/master/docs/changelog-process.md"
 	changelogDetectedMessage      = "changelog detected :white_check_mark:"
 )
 
