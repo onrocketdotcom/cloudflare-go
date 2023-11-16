@@ -505,6 +505,35 @@ type reqOption struct {
 	params url.Values
 }
 
+type TypedReqOption func(opt *ReqOptions)
+
+type ReqOptions struct {
+	Page      string
+	PerPage   string
+	ZoneName  string
+	AccountId string
+	Status    string
+}
+
+func WithTypedPagination(opts PaginationOptions) TypedReqOption {
+	return func(r *ReqOptions) {
+		r.Page = strconv.Itoa(opts.Page)
+		r.PerPage = strconv.Itoa(opts.PerPage)
+	}
+}
+
+func ApplyReqOptions(opts []TypedReqOption) *ReqOptions {
+	reqOptions := &ReqOptions{
+		Page:    "1",
+		PerPage: "20",
+	}
+	for _, applyFunc := range opts {
+		applyFunc(reqOptions)
+	}
+
+	return reqOptions
+}
+
 // WithZoneFilters applies a filter based on zone properties.
 func WithZoneFilters(zoneName, accountID, status string) ReqOption {
 	return func(opt *reqOption) {

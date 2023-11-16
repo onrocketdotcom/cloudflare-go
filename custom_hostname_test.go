@@ -455,7 +455,7 @@ func TestCustomHostname_CustomHostnames(t *testing.T) {
 }`)
 	})
 
-	customHostnames, _, err := client.CustomHostnames(context.Background(), "foo", 1, CustomHostname{})
+	customHostnames, _, err := client.CustomHostnames(context.Background(), "foo", CustomHostname{})
 
 	want := []CustomHostname{
 		{
