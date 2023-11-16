@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"strconv"
 	"time"
 
 	"github.com/goccy/go-json"
@@ -219,10 +218,14 @@ func (api *API) CreateCustomHostname(ctx context.Context, zoneID string, ch Cust
 // The returned ResultInfo can be used to implement pagination.
 //
 // API reference: https://api.cloudflare.com/#custom-hostname-for-a-zone-list-custom-hostnames
-func (api *API) CustomHostnames(ctx context.Context, zoneID string, page int, filter CustomHostname) ([]CustomHostname, ResultInfo, error) {
+func (api *API) CustomHostnames(ctx context.Context, zoneID string,
+	filter CustomHostname, opts ...TypedReqOption) ([]CustomHostname, ResultInfo, error) {
+
+	reqOptions := ApplyReqOptions(opts)
+
 	v := url.Values{}
-	v.Set("per_page", "50")
-	v.Set("page", strconv.Itoa(page))
+	v.Set("per_page", reqOptions.PerPage)
+	v.Set("page", reqOptions.Page)
 	if filter.Hostname != "" {
 		v.Set("hostname", filter.Hostname)
 	}
@@ -262,7 +265,7 @@ func (api *API) CustomHostname(ctx context.Context, zoneID string, customHostnam
 
 // CustomHostnameIDByName retrieves the ID for the given hostname in the given zone.
 func (api *API) CustomHostnameIDByName(ctx context.Context, zoneID string, hostname string) (string, error) {
-	customHostnames, _, err := api.CustomHostnames(ctx, zoneID, 1, CustomHostname{Hostname: hostname})
+	customHostnames, _, err := api.CustomHostnames(ctx, zoneID, CustomHostname{Hostname: hostname})
 	if err != nil {
 		return "", fmt.Errorf("CustomHostnames command failed: %w", err)
 	}
